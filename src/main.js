@@ -31,7 +31,6 @@ async function onSearchFormSubmit(event) {
     event.preventDefault();
     searchKeyword = event.target.elements.searchKeywords.value.trim();
     if (searchKeyword === '') {
-        refs.loadMoreBtn.style.display = 'none';
         showMessage();
         refs.galleryList.innerHTML = '';
         return;
@@ -42,9 +41,9 @@ async function onSearchFormSubmit(event) {
     try {
         const imagesData = await fetchPhotosByPixabay(searchKeyword, counterPages);
         if (imagesData.hits.length === 0) {
+            refs.loadMoreBtn.style.display = 'none';
             showMessage();
             refs.galleryList.innerHTML = '';
-            refs.loadMoreBtn.style.display = 'none';
             return;
         }
         const markup = createGallery(imagesData.hits);
