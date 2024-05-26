@@ -3,7 +3,7 @@ import axios from "axios";
 const API_KEY = '43997870-ac002090f9f8b16e802d8cd1f';
 axios.defaults.baseURL = 'https://pixabay.com/api/'; 
 
-export const fetchPhotosByPixabay = (query, page) => {
+export const fetchPhotosByPixabay = async (query, page = 1) => {
     const searchParams = {
         q: query,
         key: API_KEY,
@@ -14,10 +14,11 @@ export const fetchPhotosByPixabay = (query, page) => {
         page: page,
     };
 
-    return axios.get('', { params: { ...searchParams } })
-        .then(response => response.data)
-        .catch(error => {
-            console.error('Error fetching photos:', error);
-            throw new Error('Failed to fetch photos from Pixabay API');
-        });
+    try {
+        const response = await axios.get('', { params: { ...searchParams } });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching photos:', error);
+        throw new Error('Failed to fetch photos from Pixabay API');
+    }
 }

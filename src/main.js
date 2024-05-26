@@ -35,13 +35,15 @@ async function onSearchFormSubmit(event) {
         refs.galleryList.innerHTML = '';
         return;
     }
+    counterPages = 1;
     refs.loader.classList.remove('is-hidden');
 
     try {
-        const imagesData = await fetchPhotosByPixabay(searchKeyword);
+        const imagesData = await fetchPhotosByPixabay(searchKeyword, counterPages);
         if (imagesData.hits.length === 0) {
             showMessage();
             refs.galleryList.innerHTML = '';
+            refs.loadMoreBtn.style.display = 'none';
             return;
         }
         const markup = createGallery(imagesData.hits);
@@ -60,15 +62,14 @@ async function onLoadMoreClick() {
     refs.loader.classList.remove('is-hidden');
     try {
         const imagesData = await fetchPhotosByPixabay(searchKeyword, counterPages + 1);
+        if (counterPages * 15 >= imagesData.totalHits) {
+            refs.loadMoreBtn.style.display = 'none';
+        }
         if (imagesData.hits.length > 0) {
             const markup = createGallery(imagesData.hits);
             refs.galleryList.insertAdjacentHTML('beforeend', markup);
             lightbox.refresh();
             counterPages += 1;
-            if (counterPages * 15 >= imagesData.totalHits) {
-                refs.loadMoreBtn.style.display = 'none';
-                showMessage("We're sorry, but you've reached the end of search results.");
-            }
             smoothScroll();
         } else {
             showMessage();
