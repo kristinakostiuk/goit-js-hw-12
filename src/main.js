@@ -33,6 +33,7 @@ async function onSearchFormSubmit(event) {
     if (searchKeyword === '') {
         showMessage();
         refs.galleryList.innerHTML = '';
+        refs.loadMoreBtn.style.display = 'none';
         return;
     }
     counterPages = 1;
