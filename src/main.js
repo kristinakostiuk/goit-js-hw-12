@@ -31,9 +31,9 @@ async function onSearchFormSubmit(event) {
     event.preventDefault();
     searchKeyword = event.target.elements.searchKeywords.value.trim();
     if (searchKeyword === '') {
+        refs.loadMoreBtn.style.display = 'none';
         showMessage();
         refs.galleryList.innerHTML = '';
-        refs.loadMoreBtn.style.display = 'none';
         return;
     }
     counterPages = 1;
